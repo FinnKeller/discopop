@@ -32,6 +32,7 @@
 #include <tuple>
 #include <unordered_map>
 #include <utility>
+#include <atomic>
 
 extern bool USE_PERFECT;
 
@@ -41,6 +42,10 @@ extern std::int32_t SIG_NUM_ELEM;
 extern std::int32_t SIG_NUM_HASH;
 
 extern std::uint64_t *numAccesses;
+#if defined DP_NAIVE_SAMPLING && DP_NAIVE_SAMPLING == 1
+extern std::int32_t WRITE_SAMPLE_BATCH;
+extern bool profilingOn;
+#endif
 
 namespace __dp {
 

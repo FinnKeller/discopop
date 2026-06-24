@@ -88,4 +88,9 @@ double Signature::expectedFalsePositiveRate() {
   double result = 0.0;
   return result;
 }
+void Signature::clear() {
+ memset(sigarray, 0, sigSizeInByte);
+ insertedElem = 0;
+ conflictElem = 0;
+}
 } // namespace __dp

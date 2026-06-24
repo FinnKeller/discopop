@@ -367,7 +367,11 @@ void analyzeSingleAccess(
 void analyzeSingleAccess(__dp::AbstractShadow *SMem, __dp::AccessInfo &access) {
 #endif
 
-  // analyze data dependences
+#if defined DP_NAIVE_SAMPLING && DP_NAIVE_SAMPLING == 1
+  if (access.clear_shadow_memory) {
+    SMem->clear();
+  }
+#endif
 #ifdef DP_INTERNAL_TIMER
   const auto timer = Timer(timers, TimerRegion::ANALYZE_SINGLE_ACCESS);
 #endif
@@ -659,6 +663,8 @@ void finalizeParallelization() {
   // fake signaling: just notify the workers that no more addresses will be
   // collected
   finalizeParallelizationCalled = true;
+
+  
 
   // wait for worker threads
   for (int i = 0; i < NUM_WORKERS; ++i)

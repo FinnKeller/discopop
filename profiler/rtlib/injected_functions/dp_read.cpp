@@ -14,6 +14,8 @@
 
 #include "../runtimeFunctions.hpp"
 #include "../runtimeFunctionsGlobals.hpp"
+#include "../runtimeFunctionsGlobals.hpp"
+
 
 #include "../../share/include/debug_print.hpp"
 #include "../../share/include/timer.hpp"
@@ -28,6 +30,8 @@ using namespace std;
 
 namespace __dp {
 
+static std::uint64_t writeSampleCount = 0;
+
 /******* Instrumentation function *******/
 extern "C" {
 #ifdef SKIP_DUP_INSTR
@@ -39,6 +43,37 @@ void __dp_read(LID lid, ADDR addr, const char *var) {
   if (!dpInited || targetTerminated) {
     return;
   }
+#if defined DP_NAIVE_SAMPLING && DP_NAIVE_SAMPLING == 1
+  const uint64_t idx = writeSampleCount++;
+  const bool profilingOn = (((idx / WRITE_SAMPLE_BATCH) & 1) == 0);
+
+  if (!profilingOn) {
+    if (idx > 1 && (((idx - 1) / WRITE_SAMPLE_BATCH) & 1) == 0) {
+  #if defined DP_NUM_WORKERS && DP_NUM_WORKERS == 0
+      AccessInfo current;
+      current.clear_shadow_memory = true;
+      current.lid = 1;
+      current.addr = 1;
+      analyzeSingleAccess(singleThreadedExecutionSMem, current);
+  #else
+      while (!firstAccessQueue.can_accept_entries()) {
+        usleep(1000);
+      }
+      AccessInfo &current = mainThread_AccessInfoBuffer->get_next_AccessInfo_buffer();
+      current.clear_shadow_memory = true;
+      current.isRead = true;
+      current.lid = 1;
+      current.var = nullptr;
+      current.AAvar = 0;
+      current.addr = 1;
+      current.skip = false;
+      firstAccessQueue.push(mainThread_AccessInfoBuffer);
+      mainThread_AccessInfoBuffer = firstAccessQueueChunkBuffer.get_prepared_chunk(FIRST_ACCESS_QUEUE_SIZES);
+  #endif
+    }
+    return;
+  }
+#endif
 
 #ifdef DP_PTHREAD_COMPATIBILITY_MODE
   std::lock_guard<std::mutex> guard(pthread_compatibility_mutex);
@@ -93,6 +128,7 @@ void __dp_read(LID lid, ADDR addr, const char *var) {
   }
   AccessInfo &current = mainThread_AccessInfoBuffer->get_next_AccessInfo_buffer();
 #endif
+  current.clear_shadow_memory = false;
   current.isRead = true;
   // add current call path state identifier to lid for later retrieval
   current.lid = lid | (((uint64_t)current_callpath_state->get_id()) << 32);

@@ -46,6 +46,8 @@ public:
   virtual std::vector<std::pair<std::int64_t, sigElement>> getWriteKVPairs() = 0;
 
   virtual void print() = 0;
+
+  virtual void clear() = 0;
 };
 
 } // namespace __dp

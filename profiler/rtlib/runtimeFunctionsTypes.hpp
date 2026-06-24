@@ -63,14 +63,16 @@ typedef enum {
 
 struct AccessInfo {
   AccessInfo(bool isRead, LID lid, char *var, std::int64_t AAvar, ADDR addr, bool skip = false)
-      : isRead(isRead), lid(lid), var(var), AAvar(AAvar), addr(addr), skip(skip) {
+      : isRead(isRead), lid(lid), var(var), AAvar(AAvar), addr(addr), skip(skip)
+      , clear_shadow_memory(false)
+    {
 #if DP_CALLTREE_PROFILING
     call_tree_node_ptr = nullptr;
     calculate_dependency_metadata = true;
 #endif
   }
 
-  AccessInfo() : isRead(false), lid(0), var(""), AAvar(0), addr(0), skip(false) {
+  AccessInfo() : isRead(false), lid(0), var(""), AAvar(0), addr(0), skip(false), clear_shadow_memory(false) {
 #if DP_CALLTREE_PROFILING
     call_tree_node_ptr = nullptr;
     calculate_dependency_metadata = true;
@@ -81,6 +83,7 @@ struct AccessInfo {
   // hybrid analysis
   bool skip;
   // End HA
+  bool clear_shadow_memory;
   LID lid;
   const char *var;
   std::int64_t AAvar; // memory region id; previously: name of allocated variable -> "Anti Aliased Variable"

@@ -52,6 +52,8 @@ public:
 
   double expectedFalsePositiveRate();
 
+  void clear();
+
 private:
   std::int32_t sigSlotSize; // in bits
   std::int32_t numSlot;
