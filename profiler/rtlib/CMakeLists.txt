@@ -84,6 +84,12 @@ if(DEFINED DP_NUM_WORKERS)
         target_compile_definitions(DiscoPoP_RT PUBLIC DP_NUM_WORKERS=${DP_NUM_WORKERS})
 endif()
 
+if(DEFINED DP_NAIVE_SAMPLING)
+        if (NOT ${DP_NAIVE_SAMPLING} EQUAL 0)
+                target_compile_definitions(DiscoPoP_RT PUBLIC DP_NAIVE_SAMPLING=${DP_NAIVE_SAMPLING})
+        endif()
+endif()
+
 if(DEFINED DP_INTERNAL_TIMER)
         if(NOT ${DP_INTERNAL_TIMER} EQUAL 0)
                 target_compile_definitions(DiscoPoP_RT PUBLIC DP_INTERNAL_TIMER=${DP_INTERNAL_TIMER})

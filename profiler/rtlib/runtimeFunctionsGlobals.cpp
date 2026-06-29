@@ -19,6 +19,12 @@ std::int32_t SIG_ELEM_BIT = 56;
 std::int32_t SIG_NUM_ELEM = 270000;
 std::int32_t SIG_NUM_HASH = 2;
 
+//Naive sampling parameters
+#if defined DP_NAIVE_SAMPLING && DP_NAIVE_SAMPLING == 1
+std::int32_t WRITE_SAMPLE_BATCH = 1024;
+bool profilingOn = true;
+#endif
+
 std::uint64_t *numAccesses = nullptr;
 
 namespace __dp {

@@ -34,6 +34,11 @@ public:
     delete sigWrite;
   }
 
+  inline void clear(){
+    sigRead->clear();
+    sigWrite->clear();
+  }
+
   inline sigElement testInRead(std::int64_t memAddr) { return sigRead->membershipCheck(memAddr); }
 
   inline sigElement testInWrite(std::int64_t memAddr) { return sigWrite->membershipCheck(memAddr); }

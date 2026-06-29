@@ -46,12 +46,16 @@ public:
     std::swap(sigRead, other.sigRead);
     std::swap(sigWrite, other.sigWrite);
 
-    return *this;
+    return *this; //this übernimmt Zeiger von other; other erhält zeiger von this
   }
 
   ~PerfectShadow() {
     delete sigRead;
     delete sigWrite;
+  }
+  inline void clear() {
+    sigRead->clear();
+    sigWrite->clear();
   }
 
   inline sigElement testInRead(std::int64_t memAddr) { return (*sigRead)[memAddr]; }
@@ -132,6 +136,11 @@ public:
   }
 
   ~PerfectShadow2() {}
+
+  inline void clear(){
+    read_cache.clear();
+    write_cache.clear();
+  }
 
   sigElement testInRead(const std::int64_t memAddr) noexcept { return read_cache[memAddr]; }
 
@@ -216,7 +225,7 @@ public:
     return kv_pairs;
   }
 
-  void print() {
+   void print() {
     std::cout << "ADDR \t READ \t WRITE\t\t// Shadow Memory" << std::endl;
     std::cout << "-------------------------" << std::endl;
     for (auto pair : read_cache) {
