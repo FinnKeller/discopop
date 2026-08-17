@@ -1,13 +1,12 @@
 #include <stdio.h>
 
+// 1.1.
+// Quelle: Nicht volatile
+// Ziel: Nicht volatile
+
 int main(){
     int a = 0;
-    int b = 1;
-    int* p = &a;
-    int* arr[] = {&a,&b};
+    int* p = &a; //Ziel
     int x = 0;
-    for(int i = 0; i < 10; i ++){
-        p = arr[i%2];
-        x = *p;
-    }
+    x = *p; //Quelle
 }

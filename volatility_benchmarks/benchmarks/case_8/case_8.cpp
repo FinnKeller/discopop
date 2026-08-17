@@ -1,15 +1,18 @@
-#include <stdio.h>
 #include <stdlib.h>
 
+// Case 8
+// Source: not volatile
+// Goal: not volatile
 
-int main(){
-	int arr[10] = {0,1,2,3,4,5,6,7,8,9};
-	int* ptr = &arr[0];
-	int x = 0;
+static int* advance(int* base, int offset) {
+    return base + offset;
+}
 
-	for(int i = 0; i < 10; i++){
-		ptr = &arr[0] + i;
-		x = *ptr;
-	}
+int main() {
+    int data[6] = {0, 1, 2, 3, 4, 5};
+    int* source = advance(&data[0], 2);
+    int value = *source; // Quelle
 
+    int* goal = advance(&data[0], 4);
+    *goal = value; // Ziel
 }

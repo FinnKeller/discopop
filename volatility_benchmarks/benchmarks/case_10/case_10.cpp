@@ -1,21 +1,18 @@
-#include <stdio.h>
 #include <stdlib.h>
 
-void bar(int *p) {
-    *p = 42;
-}
+// Case 10
+// Source: volatile
+// Goal: not volatile
 
-void foobar(int *p) {
-    *p = 12;
+static int read_value(int* values, int index) {
+    return values[index];
 }
 
 int main() {
-    int a = 0;
-    int *ptr = &a;
+    int values[5] = {3, 6, 9, 12, 15};
+    int sink = 0;
+    int* goal = &sink; // Ziel
 
-    void (*funcs[2])(int *) = {bar, foobar};
-
-    funcs[rand() % 2](ptr);
-
-    int x = *ptr;
+    int value = read_value(values, rand() % 5); // Quelle
+    *goal = value;
 }

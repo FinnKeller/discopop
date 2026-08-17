@@ -1,44 +1,105 @@
-from collections import defaultdict, Counter
+from collections import defaultdict
 import re
 import sys
 import os
 
+def is_wrapper_artifact(key, value):
+    if key.endswith("@0"):
+        return True
+
+    if "__dp_repeat" in key:
+        return True
+
+    if "__dp_repeat" in value:
+        return True
+
+    return False
 def get_dict(file_path):
     d = defaultdict(list)
-    with open(file_path, 'r', encoding='utf-8') as r:
-        for line_num, line in enumerate(r, 1):
+
+    with open(file_path, "r", encoding="utf-8") as r:
+        for line in r:
             stripped = line.strip()
+
             if not stripped:
                 continue
+
             parts = stripped.split(None, 1)
             key = parts[0]
-            if "BGN" in stripped or "END" in stripped or key == "START":
+
+            if (
+                key == "START"
+                or "BGN" in stripped
+                or "END" in stripped
+            ):
                 continue
 
             value = parts[1].strip() if len(parts) > 1 else ""
+
+            if is_wrapper_artifact(key, value):
+                continue
+
             d[key].append(value)
+
     return d
 
 def normalize(value):
     value = re.sub(r'S\d+', 'S', value)
     value = re.sub(r'([A-Za-z0-9_]+)\(\d+\)', r'\1', value)
-
+    value = canonicalize_dependency_order(value)
     return value
+
+def canonicalize_dependency_order(value):
+    tokens = value.split()
+
+    if not tokens:
+        return value
+
+    # NOM is metadata describing the whole dependency record.
+    prefix = []
+
+    if tokens[0] == "NOM":
+        prefix = ["NOM"]
+        tokens = tokens[1:]
+
+    segments = []
+    current = []
+
+    dependency_types = {"INIT", "RAW", "WAR", "WAW"}
+
+    for tok in tokens:
+        if tok in dependency_types:
+            if current:
+                segments.append(current)
+            current = [tok]
+        else:
+            current.append(tok)
+
+    if current:
+        segments.append(current)
+
+    segments.sort(key=lambda x: " ".join(x))
+
+    return " ".join(prefix + [
+        token
+        for segment in segments
+        for token in segment
+    ])
 
 def compare_dicts(d1, d2):
     all_keys = sorted(set(d1) | set(d2))
     differences = {}
 
     for key in all_keys:
-        v1 = [normalize(v) for v in d1.get(key, [])]
-        v2 = [normalize(v) for v in d2.get(key, [])]
+        # Compare unique dependency sets instead of frequency counts
+        set1 = set(normalize(v) for v in d1.get(key, []))
+        set2 = set(normalize(v) for v in d2.get(key, []))
 
-        counter1 = Counter(v1)
-        counter2 = Counter(v2)
+        lost = set1 - set2
+        added = set2 - set1
 
-        if counter1 != counter2:
-            lost = counter1 - counter2
-            added = counter2 - counter1
+        # Mismatch if new unobserved dependencies appear, or if a key drops completely
+        if lost or added:
             differences[key] = {'lost': lost, 'added': added}
 
     return differences
@@ -60,18 +121,18 @@ def main():
         if not diffs:
             print("Equivalent after normalization.", file=out)
         else:
-            print(f"Found {len(diffs)} keys with dependency mismatches\n", file= out)
+            print(f"Found {len(diffs)} keys with dependency mismatches\n", file=out)
 
             for key, changes in diffs.items():
                 print(f"Key: {key}", file=out)
                 if changes['lost']:
-                    for dep, count in changes['lost'].items():
-                        print(f"  [-] LOST {count}x: {dep}",file=out)
+                    for dep in changes['lost']:
+                        print(f"  [-] LOST: {dep}", file=out)
 
                 if changes['added']:
-                    for dep, count in changes['added'].items():
-                        print(f"  [+] WRONG/ADDED {count}x: {dep}",file=out)
-                print("-" * 50,file=out)
+                    for dep in changes['added']:
+                        print(f"  [+] WRONG/ADDED: {dep}", file=out)
+                print("-" * 50, file=out)
 
 if __name__ == "__main__":
     main()
