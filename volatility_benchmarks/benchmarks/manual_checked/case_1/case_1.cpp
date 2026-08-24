@@ -2,17 +2,17 @@
 #include <stdlib.h>
 
 // 1.2.
-// Quelle: Nicht volatile
-// Ziel: volatile
+// Source: Nicht volatile
+// Sink: volatile
 
 int main(){
-    int a = 0; //Ziel
-    int b = 1; //Ziel
+    int a = 0; //Sink
+    int b = 1; //Sink
     int* p = &a; 
     int* arr[] = {&a,&b};
     int x = 0;
     int ran = 0;
     ran = rand() % 2;
     p = arr[ran];
-    x = *p; //Quelle
+    x = *p; //Source
 }

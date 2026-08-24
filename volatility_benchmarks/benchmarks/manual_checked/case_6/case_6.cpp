@@ -2,13 +2,15 @@
 #include <stdio.h>
 
 // 2.3.
+// Source:volatile
+// Sink: Not volatile
 
 int* a(int* arr) {
-    return &arr[1]; //Ziel
+    return &arr[1]; //Sink
 }
 
 int* b(int* arr) {
-    return &arr[2]; //Ziel
+    return &arr[2]; //sink
 }
 int main(){
     int arr[10];
@@ -24,6 +26,6 @@ int main(){
     arr[9] = 9;
     int* (*funcs[2])(int*) = {a,b};
     int* ptr=funcs[rand() % 2](arr);
-    ptr = &arr[0] + 5;
+    ptr = &arr[0] + 5; //Source
     int x = *ptr;
 }

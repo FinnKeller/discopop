@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 // 2.4.
-// Quelle: volatile
-// Ziel: volatile
+// Source: volatile
+// Sink: volatile
 int foo(int* ptr){
-    return *ptr;  // Quelle 1
+    return *ptr;  // Sink
 }
 
 int bar(int* ptr){
-    return *ptr; // Quelle 2
+    return *ptr; // Sink
 }
 int* a(int* arr) { return &arr[1];}
 int* b(int* arr) { return &arr[2]; }
@@ -26,7 +26,7 @@ int main(){
  	arr[8] = 8;
  	arr[9] = 9;
  	int* (*funcs[2])(int*) = { a, b };
- 	int* ptr = funcs[rand() % 2](arr); //Quelle
+ 	int* ptr = funcs[rand() % 2](arr); //Source
  	ptr = ptr + (rand() % 5);
 
  	int (*read_funcs[2])(int*) = { foo, bar };

@@ -3,7 +3,6 @@ import re
 
 
 def wrap_main_in_loop(source: str, repeat_count: str) -> str:
-    # Find the opening brace of main().
     match = re.search(
         r'\bint\s+main\s*\([^)]*\)\s*\{',
         source
@@ -37,12 +36,6 @@ def wrap_main_in_loop(source: str, repeat_count: str) -> str:
 
     main_body = source[body_start:body_end]
 
-    # Remove only a final "return ..." from main.
-    #
-    # The return has to be removed because it would otherwise terminate
-    # the first iteration of the loop.
-    #
-    # This intentionally only handles a return at the end of main.
     main_body = re.sub(
         r'\s*return\s+[^;]+;\s*$',
         '',
@@ -56,9 +49,6 @@ def wrap_main_in_loop(source: str, repeat_count: str) -> str:
     # Keep everything after main exactly as it was.
     suffix = source[body_end:]
 
-    # Insert the repetition loop directly into main().
-    #
-    # Do NOT move the body into another function.
     new_source = (
         prefix
         + "\n"

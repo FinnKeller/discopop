@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 // 2.2.
+// Source: Not volatile
+// Sink:  volatile
 
 int main(){
-   int arr[10]; //Ziel
+   int arr[10]; //Sink
    arr[0] = 0;
    arr[1] = 1;
    arr[2] = 2;
@@ -14,7 +16,7 @@ int main(){
    arr[7] = 7;
    arr[8] = 8;
    arr[9] = 9;
-   int* ptr = &arr[0]; 
+   int* ptr = &arr[0];
    ptr = ptr + (rand() % 10);
-   int x = *ptr; //Quelle
+   int x = *ptr; //Source
    }

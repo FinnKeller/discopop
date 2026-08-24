@@ -2,14 +2,14 @@
 #include <stdlib.h>
 
 // 1.4.
-// Quelle: volatile
-// Ziel: volatile
+// Source: volatile
+// Sink: volatile
 
 void bar(int** ptr, int* arr[]) {
- 	*ptr = arr[0]; //Quelle
+ 	*ptr = arr[0]; //Source
 }
 void foobar(int** ptr,int* arr[]) {
- 	*ptr=arr[1]; //Quelle
+ 	*ptr=arr[1]; //Source
 }
 int main() {
     int a = 0;

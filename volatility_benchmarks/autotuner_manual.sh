@@ -13,7 +13,7 @@ REPEAT_COUNT=${REPEAT_COUNT:-100}
 PROFILER_FILE="${REPO_ROOT}/profiler/rtlib/runTimeFunctionsGlobals.cpp"
 WRAP_SCRIPT="${SCRIPT_DIR}/wrap_main_loop.py"
 COMPARISON_SCRIPT="${SCRIPT_DIR}/comparison_volatility_cases.py"
-BENCHMARKS_DIR="${SCRIPT_DIR}/benchmarks/automatic"
+BENCHMARKS_DIR="${SCRIPT_DIR}/benchmarks/manual_checked"
 
 if [ ! -f "${WRAP_SCRIPT}" ]; then
     echo "ERROR: wrap_main_loop.py not found at ${WRAP_SCRIPT}." >&2
