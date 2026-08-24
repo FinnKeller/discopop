@@ -26,7 +26,7 @@ Important requirement for the assistant:
 
 Task for the assistant:
 - Create a short, interactive explanation that the user MUST explicitly accept before any work proceeds.
-- After acceptance, generate new benchmark examples in the automatic folder that cover different volatility splits and different complexities.
+- After acceptance, generate around 100 new benchmark examples in the automatic folder that cover different volatility splits and different complexities.
 - Ensure each generated example is genuinely new and not a copy of an existing case.
 - Comment each example with:
   - the volatility split
@@ -37,11 +37,7 @@ Task for the assistant:
   - case_*_yes
 - From volatility_benchmarks do source ../venv/bin/activate to ensure the correct environment is used.
 - After generating ALL the examples run the autotuner once.
-- Mark only the examples where actual result != expected result (a mismatch between intention and autotuner output). Do not mark examples where actual result matches expected result, even if the case is trivial or similar to an existing one.
-- For each marked example, report:
-  - the example name
-  - the expected result (from the comment)
-  - the actual autotuner result
+- If a generated example does not produce the intended volatility after validation, it must be marked in a invalid_cases.txt file and must not be modified or rewritten to appear valid.
 Execution rules:
 - The assistant must not silently proceed to code generation.
 - The assistant must stop after the explanation and wait for approval.
