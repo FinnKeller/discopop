@@ -1,0 +1,1 @@
+This directory contains AI generated examples for volatility benchmarks.
