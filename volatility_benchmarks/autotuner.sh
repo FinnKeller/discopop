@@ -10,7 +10,7 @@ DISCOPOP_CXX="${REPO_ROOT}/venv/bin/discopop_cxx"
 BATCH_VALUES=(${BATCH_VALUES:-64 128 256 512 1024 2048})
 REPEAT_COUNT=${REPEAT_COUNT:-100}
 
-PROFILER_FILE="${REPO_ROOT}/profiler/rtlib/runTimeFunctionsGlobals.cpp"
+PROFILER_FILE="${REPO_ROOT}/profiler/rtlib/runtimeFunctionsGlobals.cpp"
 WRAP_SCRIPT="${SCRIPT_DIR}/wrap_main_loop.py"
 COMPARISON_SCRIPT="${SCRIPT_DIR}/comparison_volatility_cases.py"
 BENCHMARKS_DIR="${SCRIPT_DIR}/benchmarks/automatic"

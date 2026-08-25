@@ -44,7 +44,9 @@ def get_dict(file_path):
     return d
 
 def normalize(value):
-    value = re.sub(r'S\d+', 'S', value)
+    # Stack variable ids are negative numbers, so the sign must be part of
+    # the pattern - otherwise every stack variable looks changed between runs.
+    value = re.sub(r'S-?\d+', 'S', value)
     value = re.sub(r'([A-Za-z0-9_]+)\(\d+\)', r'\1', value)
     value = canonicalize_dependency_order(value)
     return value

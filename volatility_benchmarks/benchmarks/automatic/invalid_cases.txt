@@ -1,0 +1,244 @@
+Invalid cases
+=============
+
+Validation run: autotuner.sh, REPEAT_COUNT=100,
+WRITE_SAMPLE_BATCH in {64, 128, 256, 512, 1024, 2048},
+DP_NAIVE_SAMPLING=1 against a DP_NAIVE_SAMPLING=0 baseline.
+
+Validity criterion:
+  case_*_yes  is valid if it is reported VOLATILE for at least one batch size.
+  case_*_no   is valid if it is reported STABLE for every batch size.
+
+The cases listed below did not produce their intended volatility. As required by
+the generator prompt they are recorded here and were NOT modified, retuned or
+rewritten to make them appear valid. The measured per batch verdicts are quoted
+verbatim from benchmarks/automatic/volatility_results/.
+
+Result: 26 of 100 cases are invalid - 5 of 75 case_*_yes and 21 of 25 case_*_no.
+
+A) Intended volatility, none observed
+   (5 cases, case_*_yes reported STABLE for every batch size)
+-------------------------------------------------------------
+
+Cause: the volatile end has only a few candidate instructions, each of them
+taken in a large share of the 100 repetitions, and each candidate touches its
+address exactly once. The union of dependencies over all repetitions therefore
+survives every sampling window and no distinct edge is ever lost. This is the
+known weakness of a uniform rand() % N selection: with N small and 100
+repetitions, every variant is observed many times.
+
+  case_026_sinkvol_yes
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_036_sinkvol_yes
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_051_srcvol_yes
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_061_srcvol_yes
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_076_bothvol_yes
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+B) Intended no volatility, volatility observed
+   (21 cases, case_*_no reported VOLATILE for at least one batch size)
+---------------------------------------------------------------------
+
+B1) Pure additions - 20 cases.
+
+These cases never lose a dependency; sampling ADDS dependencies. When the
+shadow memory is cleared at an on-to-off window transition the runtime forgets
+the previous write to an address. The next write to that address is then
+emitted as an extra WAW edge, and the following access can be reclassified as
+INIT. Verified per key and per dependency segment: every segment reported as
+LOST also occurs in the corresponding ADDED record, so the sampled dependency
+set is a strict superset of the baseline. The artifact appears as soon as the
+total access count of the program exceeds the batch size, which is why these
+cases become STABLE again at larger batch sizes.
+
+Every case listed here writes at least one address more than once per
+repetition, which is the precondition for the artifact. For reference, the
+four case_*_no cases that stayed STABLE everywhere (006, 013, 023, 024) and
+the hand checked no volatility references (manual_checked/case_0, case_4) do
+not have that property.
+
+  case_001_none_no
+      64: VOLATILE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_002_none_no
+      64: VOLATILE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_003_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_004_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_005_none_no
+      64: VOLATILE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_007_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_008_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_009_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: VOLATILE
+      1024: STABLE
+      2048: STABLE
+  case_010_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: VOLATILE
+      1024: STABLE
+      2048: STABLE
+  case_011_none_no
+      64: VOLATILE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_012_none_no
+      64: VOLATILE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_014_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_015_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_016_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: VOLATILE
+      1024: STABLE
+      2048: STABLE
+  case_017_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_019_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_020_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: VOLATILE
+      1024: VOLATILE
+      2048: VOLATILE
+  case_021_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_022_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+  case_025_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+B2) Genuine dependency loss - 1 case.
+
+  case_018_none_no
+      64: VOLATILE
+      128: VOLATILE
+      256: VOLATILE
+      512: VOLATILE
+      1024: VOLATILE
+      2048: VOLATILE
+
+  In addition to the added WAW and INIT edges of group B1, this case really
+  loses dependencies: at batch 64 nine keys lose WAR segments on the heap
+  buffer, for example 'WAR 66@64|GEPRESULT_buffer' at key 48@112. With 64
+  heap elements filled and scanned per repetition the access volume is high
+  enough that whole write/read pairs fall into off windows, so the intended
+  no volatility property does not hold at any tested batch size.
