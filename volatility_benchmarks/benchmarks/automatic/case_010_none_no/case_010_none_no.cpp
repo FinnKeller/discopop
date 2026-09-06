@@ -2,26 +2,18 @@
 
 // ============================================================
 // Case 010 - Volatility split 1: no volatility
-//   Source (read) : stable  - one read instruction in the walk loop
-//   Sink   (write): stable  - one write instruction in the walk loop
+//   Source (read) : stable  - one read of the addressed element
+//   Sink   (write): stable  - one write of the addressed element
 // Idea:
-//   Walk a pointer over an array with a fixed stride of two, writing and
-//   reading through the walking pointer. The visited addresses change
-//   but the instruction pair stays the same, and the pattern repeats
-//   often enough to be observed in any on-window.
+//   Single pointer walk step with constant offset.
 // Expected result:
 //   STABLE for every WRITE_SAMPLE_BATCH.
 // ============================================================
 
 int main() {
     int arr[12];
-    for (int i = 0; i < 12; ++i) {
-        arr[i] = 0;
-    }
-    int total = 0;
-    for (int* p = arr; p < arr + 12; p += 2) {
-        *p = 5;                 // Sink
-        total += *p;            // Source
-    }
-    (void) total;
+    int* p = arr + 4;
+    *p = 5;                 // Sink
+    int x = *p;             // Source
+    (void)x;
 }

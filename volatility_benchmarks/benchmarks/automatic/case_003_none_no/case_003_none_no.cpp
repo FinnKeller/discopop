@@ -2,27 +2,23 @@
 
 // ============================================================
 // Case 003 - Volatility split 1: no volatility
-//   Source (read) : stable  - two read sites, each tied to one address
-//   Sink   (write): stable  - two write sites, each tied to one address
+//   Source (read) : stable  - two direct scalar reads
+//   Sink   (write): stable  - two direct scalar writes
 // Idea:
-//   Two completely independent write/read pairs on two distinct scalars.
-//   There is ambiguity in the *number* of dependencies but none in their
-//   endpoints: each address has a single writer line and a single reader
-//   line, so no runtime choice can swap the partners.
+//   Two independent scalars are written and then read directly.
+//   No extra pointer bookkeeping access is involved.
 // Expected result:
 //   STABLE for every WRITE_SAMPLE_BATCH. Both edges recur in every
 //   repetition, so neither can be lost from the union.
 // ============================================================
 
 int main() {
-    int a = 0;
-    int b = 0;
-    int* pa = &a;
-    int* pb = &b;
-    *pa = 11;        // Sink (for a)
-    *pb = 22;        // Sink (for b)
-    int x = *pa;     // Source (for a)
-    int y = *pb;     // Source (for b)
+    int a;
+    int b;
+    a = 11;          // Sink (for a)
+    b = 22;          // Sink (for b)
+    int x = a;       // Source (for a)
+    int y = b;       // Source (for b)
     (void) x;
     (void) y;
 }

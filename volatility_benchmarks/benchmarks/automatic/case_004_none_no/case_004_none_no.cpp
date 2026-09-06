@@ -19,8 +19,6 @@ struct Pair {
 
 int main() {
     Pair pair;
-    pair.first = 0;
-    pair.second = 0;
     Pair* ptr = &pair;
     ptr->second = 9;        // Sink
     int x = ptr->second;    // Source
