@@ -1,0 +1,15 @@
+diGraph G {
+  main -> call_32 [label = 32];
+  main -> main_loopstate0 [label = 26];
+  main_loopstate1 -> call_32 [label = 32];
+  main_loopstate1 -> main [label = 39];
+  main_loopstate1 -> main_loopstate2 [label = 42];
+  main_loopstate0 -> call_32 [label = 32];
+  main_loopstate0 -> main [label = 39];
+  main_loopstate0 -> main_loopstate1 [label = 42];
+  main_loopstate2 -> call_32 [label = 32];
+  main_loopstate2 -> main [label = 39];
+  main_loopstate2 -> main_loopstate0 [label = 42];
+  call_32 -> _Z4loadPKi;
+}
+

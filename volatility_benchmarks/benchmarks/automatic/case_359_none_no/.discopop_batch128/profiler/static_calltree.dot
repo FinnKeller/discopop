@@ -1,0 +1,30 @@
+diGraph G {
+  main -> call_48 [label = 48];
+  main -> call_43 [label = 43];
+  main -> call_41 [label = 41];
+  main -> call_31 [label = 31];
+  main -> main_loopstate0 [label = 27];
+  main_loopstate0 -> call_48 [label = 48];
+  main_loopstate0 -> call_43 [label = 43];
+  main_loopstate0 -> call_41 [label = 41];
+  main_loopstate0 -> call_31 [label = 31];
+  main_loopstate0 -> main [label = 55];
+  main_loopstate0 -> main_loopstate1 [label = 79];
+  main_loopstate2 -> call_48 [label = 48];
+  main_loopstate2 -> call_43 [label = 43];
+  main_loopstate2 -> call_41 [label = 41];
+  main_loopstate2 -> call_31 [label = 31];
+  main_loopstate2 -> main [label = 55];
+  main_loopstate2 -> main_loopstate0 [label = 79];
+  main_loopstate1 -> call_48 [label = 48];
+  main_loopstate1 -> call_43 [label = 43];
+  main_loopstate1 -> call_41 [label = 41];
+  main_loopstate1 -> call_31 [label = 31];
+  main_loopstate1 -> main [label = 55];
+  main_loopstate1 -> main_loopstate2 [label = 79];
+  call_48 -> _ZdlPvm;
+  call_43 -> _ZL10load_valuePKc;
+  call_41 -> _ZZ4mainENK3$_0clEPc;
+  call_31 -> _Znwm;
+}
+

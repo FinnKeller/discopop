@@ -1,0 +1,20 @@
+diGraph G {
+  main -> call_47 [label = 47];
+  main -> call_46 [label = 46];
+  main -> main_loopstate0 [label = 40];
+  main_loopstate1 -> call_46 [label = 46];
+  main_loopstate1 -> main [label = 57];
+  main_loopstate1 -> call_47 [label = 47];
+  main_loopstate1 -> main_loopstate2 [label = 60];
+  main_loopstate0 -> call_46 [label = 46];
+  main_loopstate0 -> main [label = 57];
+  main_loopstate0 -> call_47 [label = 47];
+  main_loopstate0 -> main_loopstate1 [label = 60];
+  main_loopstate2 -> call_46 [label = 46];
+  main_loopstate2 -> main [label = 57];
+  main_loopstate2 -> call_47 [label = 47];
+  main_loopstate2 -> main_loopstate0 [label = 60];
+  call_47 -> _Z8writer_bPi;
+  call_46 -> _Z8writer_aPi;
+}
+

@@ -242,3 +242,101 @@ B2) Genuine dependency loss - 1 case.
   heap elements filled and scanned per repetition the access volume is high
   enough that whole write/read pairs fall into off windows, so the intended
   no volatility property does not hold at any tested batch size.
+
+
+========================================================================
+Second generation round: cases 101-600
+========================================================================
+
+Validation run: autotuner.sh, REPEAT_COUNT=100,
+WRITE_SAMPLE_BATCH in {64, 128, 256, 512, 1024, 2048},
+DP_NAIVE_SAMPLING=1 against a DP_NAIVE_SAMPLING=0 baseline.
+
+Validity criterion:
+  case_*_yes  is valid if it is reported VOLATILE for at least one batch size.
+  case_*_no   is valid if it is reported STABLE for every batch size.
+
+The cases listed below did not produce their intended volatility. They were
+deleted from benchmarks/automatic and were NOT modified, retuned or rewritten
+to make them appear valid. The measured per batch verdicts are quoted verbatim
+from benchmarks/automatic/volatility_results/.
+
+Result: 7 of 500 newly generated cases are invalid.
+
+  case_303_none_no
+      intended split : none_no
+      construction   : rand_index / func_ptr_table / function / none / long long / 41
+      reason         : intended stability, volatility reported by the harness
+      64: VOLATILE
+      128: VOLATILE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+  case_381_sinkvol_yes
+      intended split : sinkvol_yes
+      construction   : ptr_arith / rare_switch / local_ptr / none / long / 67 / 19 / 5
+      reason         : intended volatility, none observed at any batch size
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+  case_386_sinkvol_yes
+      intended split : sinkvol_yes
+      construction   : ptr_arith / rare_lambda / function / none / int / 63 / 19 / 12
+      reason         : intended volatility, none observed at any batch size
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+  case_424_sinkvol_yes
+      intended split : sinkvol_yes
+      construction   : union_field / rare_switch / func_ptr / none / char / 53 / 29 / 9
+      reason         : intended volatility, none observed at any batch size
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+  case_441_sinkvol_yes
+      intended split : sinkvol_yes
+      construction   : local_array / rare_branch / direct / none / int / 44 / 37 / 11
+      reason         : intended volatility, none observed at any batch size
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+  case_442_sinkvol_yes
+      intended split : sinkvol_yes
+      construction   : local_array / rare_patch / function / none / short / 43 / 29 / 19
+      reason         : intended volatility, none observed at any batch size
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+
+  case_443_sinkvol_yes
+      intended split : sinkvol_yes
+      construction   : heap_struct / rare_lambda / func_ptr / none / char / 36 / 19 / 12
+      reason         : intended volatility, none observed at any batch size
+      64: STABLE
+      128: STABLE
+      256: STABLE
+      512: STABLE
+      1024: STABLE
+      2048: STABLE
+

@@ -1,0 +1,20 @@
+diGraph G {
+  main -> call_56 [label = 56];
+  main -> call_32 [label = 32];
+  main -> main_loopstate0 [label = 28];
+  main_loopstate1 -> call_56 [label = 56];
+  main_loopstate1 -> call_32 [label = 32];
+  main_loopstate1 -> main [label = 66];
+  main_loopstate1 -> main_loopstate2 [label = 77];
+  main_loopstate2 -> call_56 [label = 56];
+  main_loopstate2 -> call_32 [label = 32];
+  main_loopstate2 -> main [label = 66];
+  main_loopstate2 -> main_loopstate0 [label = 77];
+  main_loopstate0 -> call_56 [label = 56];
+  main_loopstate0 -> call_32 [label = 32];
+  main_loopstate0 -> main [label = 66];
+  main_loopstate0 -> main_loopstate1 [label = 77];
+  call_56 -> _ZL8load_refRKl;
+  call_32 -> rand;
+}
+

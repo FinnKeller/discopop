@@ -1,0 +1,15 @@
+diGraph G {
+  main -> call_20 [label = 20];
+  main -> main_loopstate0 [label = 15];
+  main_loopstate1 -> call_20 [label = 20];
+  main_loopstate1 -> main [label = 46];
+  main_loopstate1 -> main_loopstate2 [label = 62];
+  main_loopstate0 -> call_20 [label = 20];
+  main_loopstate0 -> main [label = 46];
+  main_loopstate0 -> main_loopstate1 [label = 62];
+  main_loopstate2 -> call_20 [label = 20];
+  main_loopstate2 -> main [label = 46];
+  main_loopstate2 -> main_loopstate0 [label = 62];
+  call_20 -> _ZL13store_genericIsEvPT_S0_;
+}
+

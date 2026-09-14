@@ -1,0 +1,30 @@
+diGraph G {
+  main -> call_39 [label = 39];
+  main -> call_36 [label = 36];
+  main -> call_29 [label = 29];
+  main -> call_27 [label = 27];
+  main -> main_loopstate0 [label = 18];
+  main_loopstate1 -> call_39 [label = 39];
+  main_loopstate1 -> call_36 [label = 36];
+  main_loopstate1 -> call_29 [label = 29];
+  main_loopstate1 -> call_27 [label = 27];
+  main_loopstate1 -> main [label = 50];
+  main_loopstate1 -> main_loopstate2 [label = 87];
+  main_loopstate0 -> call_39 [label = 39];
+  main_loopstate0 -> call_36 [label = 36];
+  main_loopstate0 -> call_29 [label = 29];
+  main_loopstate0 -> call_27 [label = 27];
+  main_loopstate0 -> main [label = 50];
+  main_loopstate0 -> main_loopstate1 [label = 87];
+  main_loopstate2 -> call_39 [label = 39];
+  main_loopstate2 -> call_36 [label = 36];
+  main_loopstate2 -> call_29 [label = 29];
+  main_loopstate2 -> call_27 [label = 27];
+  main_loopstate2 -> main [label = 50];
+  main_loopstate2 -> main_loopstate0 [label = 87];
+  call_39 -> _ZL14frequent_fetchPKi;
+  call_36 -> _ZL10rare_fetchPKi;
+  call_29 -> _ZL14frequent_storePi;
+  call_27 -> _ZL10rare_storePi;
+}
+

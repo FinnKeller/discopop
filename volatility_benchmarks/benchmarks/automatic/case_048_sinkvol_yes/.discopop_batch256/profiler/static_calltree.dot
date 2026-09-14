@@ -1,0 +1,23 @@
+diGraph G {
+  _ZZL15make_table_slotiEN3$_18__invokeEPi -> call_80 [label = 80];
+  main_loopstate2 -> main [label = 42];
+  main_loopstate2 -> call_28 [label = 28];
+  main_loopstate2 -> main_loopstate0 [label = 132];
+  main_loopstate0 -> main [label = 42];
+  main_loopstate0 -> call_28 [label = 28];
+  main_loopstate0 -> main_loopstate1 [label = 132];
+  main_loopstate1 -> main [label = 42];
+  main_loopstate1 -> call_28 [label = 28];
+  main_loopstate1 -> main_loopstate2 [label = 132];
+  main -> call_28 [label = 28];
+  main -> main_loopstate0 [label = 21];
+  _ZZL15make_table_slotiEN3$_28__invokeEPi -> call_91 [label = 91];
+  _ZL15make_table_sloti -> call_54 [label = 54];
+  _ZZL15make_table_slotiEN3$_08__invokeEPi -> call_69 [label = 69];
+  call_91 -> _ZZL15make_table_slotiENK3$_2clEPi;
+  call_69 -> _ZZL15make_table_slotiENK3$_0clEPi;
+  call_80 -> _ZZL15make_table_slotiENK3$_1clEPi;
+  call_54 -> llvm_memcpy_p0_p0_i64;
+  call_28 -> _ZL15make_table_sloti;
+}
+

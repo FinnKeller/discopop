@@ -1,0 +1,25 @@
+diGraph G {
+  main -> call_43 [label = 43];
+  main -> call_34 [label = 34];
+  main -> call_28 [label = 28];
+  main -> main_loopstate0 [label = 24];
+  main_loopstate1 -> call_43 [label = 43];
+  main_loopstate1 -> call_34 [label = 34];
+  main_loopstate1 -> call_28 [label = 28];
+  main_loopstate1 -> main [label = 54];
+  main_loopstate1 -> main_loopstate2 [label = 65];
+  main_loopstate0 -> call_43 [label = 43];
+  main_loopstate0 -> call_34 [label = 34];
+  main_loopstate0 -> call_28 [label = 28];
+  main_loopstate0 -> main [label = 54];
+  main_loopstate0 -> main_loopstate1 [label = 65];
+  main_loopstate2 -> call_43 [label = 43];
+  main_loopstate2 -> call_34 [label = 34];
+  main_loopstate2 -> call_28 [label = 28];
+  main_loopstate2 -> main [label = 54];
+  main_loopstate2 -> main_loopstate0 [label = 65];
+  call_43 -> _ZL9store_refRi;
+  call_34 -> rand;
+  call_28 -> _Znwm;
+}
+
