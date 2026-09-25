@@ -3,6 +3,9 @@ import re
 import sys
 import os
 
+PADDING_ARRAY_NAME = "GEPRESULT_vol_pad"
+
+
 def is_wrapper_artifact(key, value):
     if key.endswith("@0"):
         return True
@@ -13,7 +16,12 @@ def is_wrapper_artifact(key, value):
     if "__dp_repeat" in value:
         return True
 
+    if f"|{PADDING_ARRAY_NAME}" in value:
+        return True
+
     return False
+
+
 def get_dict(file_path):
     d = defaultdict(list)
 

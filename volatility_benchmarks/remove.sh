@@ -6,14 +6,14 @@ BENCHMARK_ROOT="${SCRIPT_DIR}/benchmarks"
 
 shopt -s nullglob
 
-for benchmark_set in lpp_test; do
+for benchmark_set in lpp_test/generated_volatility_copy/; do
     benchmark_dir="${BENCHMARK_ROOT}/${benchmark_set}"
     if [ ! -d "${benchmark_dir}" ]; then
         continue
     fi
 
     rm -rf "${benchmark_dir}/volatility_results"
-    for dir in "${benchmark_dir}"/case_*/; do
+    for dir in "${benchmark_dir}"/volatility_*/; do
         rm -rf "${dir}"/.discopop_* \
                "${dir}"/a.out \
                "${dir}"/a.out.dSYM

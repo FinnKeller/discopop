@@ -3,17 +3,21 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+LIBOMP_PREFIX="$(brew --prefix libomp 2>/dev/null || echo /opt/homebrew/opt/libomp)"
+export CPLUS_INCLUDE_PATH="${LIBOMP_PREFIX}/include${CPLUS_INCLUDE_PATH:+:${CPLUS_INCLUDE_PATH}}"
+export LIBRARY_PATH="${LIBOMP_PREFIX}/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
+export DYLD_LIBRARY_PATH="${LIBOMP_PREFIX}/lib${DYLD_LIBRARY_PATH:+:${DYLD_LIBRARY_PATH}}"
 VENV_PIP="${REPO_ROOT}/venv/bin/pip"
 VENV_PYTHON="${REPO_ROOT}/venv/bin/python"
 DISCOPOP_CXX="${REPO_ROOT}/venv/bin/discopop_cxx"
 
 BATCH_VALUES=(${BATCH_VALUES:-64 128 256 512 1024 2048})
-REPEAT_COUNT=${REPEAT_COUNT:-5}
+REPEAT_COUNT=${REPEAT_COUNT:-50}
 
 PROFILER_FILE="${REPO_ROOT}/profiler/rtlib/runtimeFunctionsGlobals.cpp"
 WRAP_SCRIPT="${SCRIPT_DIR}/wrap_main_loop.py"
 COMPARISON_SCRIPT="${SCRIPT_DIR}/comparison_volatility_cases.py"
-BENCHMARKS_DIR="${SCRIPT_DIR}/benchmarks/automatic"
+BENCHMARKS_DIR="${SCRIPT_DIR}/benchmarks/lpp_test/generated_volatility_copy"
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <benchmark-file.cpp>" >&2
