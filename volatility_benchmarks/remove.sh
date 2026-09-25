@@ -6,7 +6,7 @@ BENCHMARK_ROOT="${SCRIPT_DIR}/benchmarks"
 
 shopt -s nullglob
 
-for benchmark_set in automatic manual_checked WIP; do
+for benchmark_set in lpp_test; do
     benchmark_dir="${BENCHMARK_ROOT}/${benchmark_set}"
     if [ ! -d "${benchmark_dir}" ]; then
         continue
