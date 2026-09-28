@@ -83,8 +83,8 @@ framework_value = 97;
   } else {
     vol_shared = 200;  // Sink (frequent)
   }
-  int vol_pad[512];
-  for (int vol_pad_i = 0; vol_pad_i < 512; ++vol_pad_i) {
+  int vol_pad[521];
+  for (int vol_pad_i = 0; vol_pad_i < 521; ++vol_pad_i) {
     vol_pad[vol_pad_i] = vol_pad_i;  // Padding
   }
   int vol_consumed = 0;

@@ -78,8 +78,8 @@ framework_value = 34;
 {
   int vol_shared = 0;
   vol_shared = 200;  // Sink
-  int vol_pad[2048];
-  for (int vol_pad_i = 0; vol_pad_i < 2048; ++vol_pad_i) {
+  int vol_pad[2053];
+  for (int vol_pad_i = 0; vol_pad_i < 2053; ++vol_pad_i) {
     vol_pad[vol_pad_i] = vol_pad_i;  // Padding
   }
   int vol_consumed = 0;

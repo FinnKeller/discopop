@@ -73,7 +73,7 @@ struct bg_array {
 // ----------------------
 int main(int argc, char** argv) 
 {
-bg_array<int> framework_array(4, -634567788761456002);
+bg_array<int> framework_array(4, -5019450469894541168);
 for (int loop_i = 0; loop_i < 3; loop_i += 1) {
   {
     static int vol_tick = 0;

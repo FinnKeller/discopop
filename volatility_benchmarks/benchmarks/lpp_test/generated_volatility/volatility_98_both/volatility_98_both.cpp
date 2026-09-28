@@ -81,8 +81,8 @@ int main(int argc, char** argv)
   } else {
     vol_shared = 200;  // Sink (frequent)
   }
-  int vol_pad[1024];
-  for (int vol_pad_i = 0; vol_pad_i < 1024; ++vol_pad_i) {
+  int vol_pad[1031];
+  for (int vol_pad_i = 0; vol_pad_i < 1031; ++vol_pad_i) {
     vol_pad[vol_pad_i] = vol_pad_i;  // Padding
   }
   int vol_consumed = 0;

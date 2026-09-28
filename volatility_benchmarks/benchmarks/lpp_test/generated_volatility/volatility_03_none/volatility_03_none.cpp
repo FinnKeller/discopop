@@ -73,12 +73,12 @@ struct bg_array {
 // ----------------------
 int main(int argc, char** argv) 
 {
-bg_array<int> framework_array(7, -634567788761456002);
+bg_array<int> framework_array(7, -5019450469894541168);
 {
   int vol_shared = 0;
   vol_shared = 200;  // Sink
-  int vol_pad[1024];
-  for (int vol_pad_i = 0; vol_pad_i < 1024; ++vol_pad_i) {
+  int vol_pad[1031];
+  for (int vol_pad_i = 0; vol_pad_i < 1031; ++vol_pad_i) {
     vol_pad[vol_pad_i] = vol_pad_i;  // Padding
   }
   int vol_consumed = 0;

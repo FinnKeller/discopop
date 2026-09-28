@@ -73,7 +73,7 @@ struct bg_array {
 // ----------------------
 int main(int argc, char** argv) 
 {
-bg_array<int> framework_array(7, -634567788761456002);
+bg_array<int> framework_array(7, -5019450469894541168);
 {
   static int vol_tick = 0;
   int vol_shared = 0;
@@ -82,8 +82,8 @@ bg_array<int> framework_array(7, -634567788761456002);
   } else {
     vol_shared = 200;  // Sink (frequent)
   }
-  int vol_pad[256];
-  for (int vol_pad_i = 0; vol_pad_i < 256; ++vol_pad_i) {
+  int vol_pad[257];
+  for (int vol_pad_i = 0; vol_pad_i < 257; ++vol_pad_i) {
     vol_pad[vol_pad_i] = vol_pad_i;  // Padding
   }
   int vol_consumed = 0;

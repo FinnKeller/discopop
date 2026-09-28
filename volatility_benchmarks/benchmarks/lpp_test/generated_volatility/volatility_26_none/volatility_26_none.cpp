@@ -76,8 +76,8 @@ int main(int argc, char** argv)
 {
   int vol_shared = 0;
   vol_shared = 200;  // Sink
-  int vol_pad[256];
-  for (int vol_pad_i = 0; vol_pad_i < 256; ++vol_pad_i) {
+  int vol_pad[257];
+  for (int vol_pad_i = 0; vol_pad_i < 257; ++vol_pad_i) {
     vol_pad[vol_pad_i] = vol_pad_i;  // Padding
   }
   int vol_consumed = 0;
