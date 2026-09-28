@@ -18,6 +18,10 @@ def is_wrapper_artifact(key, value):
 
     if f"|{PADDING_ARRAY_NAME}" in value:
         return True
+    if "GEPRESULT_this1" in value:
+        return True
+    if "GEPRESULT_GEPRESULT_this1" in value:
+        return True
 
     return False
 

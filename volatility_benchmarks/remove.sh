@@ -6,7 +6,7 @@ BENCHMARK_ROOT="${SCRIPT_DIR}/benchmarks"
 
 shopt -s nullglob
 
-for benchmark_set in lpp_test/generated_volatility_copy/; do
+for benchmark_set in lpp_test/generated_volatility/; do
     benchmark_dir="${BENCHMARK_ROOT}/${benchmark_set}"
     if [ ! -d "${benchmark_dir}" ]; then
         continue
