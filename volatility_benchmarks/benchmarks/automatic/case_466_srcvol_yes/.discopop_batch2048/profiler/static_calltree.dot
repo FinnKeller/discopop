@@ -1,0 +1,20 @@
+diGraph G {
+  main -> call_63 [label = 63];
+  main -> call_31 [label = 31];
+  main -> main_loopstate0 [label = 27];
+  main_loopstate1 -> call_63 [label = 63];
+  main_loopstate1 -> call_31 [label = 31];
+  main_loopstate1 -> main [label = 70];
+  main_loopstate1 -> main_loopstate2 [label = 73];
+  main_loopstate0 -> call_63 [label = 63];
+  main_loopstate0 -> call_31 [label = 31];
+  main_loopstate0 -> main [label = 70];
+  main_loopstate0 -> main_loopstate1 [label = 73];
+  main_loopstate2 -> call_63 [label = 63];
+  main_loopstate2 -> call_31 [label = 31];
+  main_loopstate2 -> main [label = 70];
+  main_loopstate2 -> main_loopstate0 [label = 73];
+  call_63 -> _ZdlPvm;
+  call_31 -> _Znwm;
+}
+

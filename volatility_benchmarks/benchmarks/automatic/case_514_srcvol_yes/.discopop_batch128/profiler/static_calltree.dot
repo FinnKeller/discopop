@@ -1,0 +1,32 @@
+diGraph G {
+  main -> call_39 [label = 39];
+  main -> call_28 [label = 28];
+  main -> call_35 [label = 35];
+  main -> call_22 [label = 22];
+  main -> main_loopstate0 [label = 18];
+  main_loopstate1 -> call_28 [label = 28];
+  main_loopstate1 -> call_35 [label = 35];
+  main_loopstate1 -> call_22 [label = 22];
+  main_loopstate1 -> main [label = 50];
+  main_loopstate1 -> call_39 [label = 39];
+  main_loopstate1 -> main_loopstate2 [label = 91];
+  main_loopstate0 -> call_28 [label = 28];
+  main_loopstate0 -> call_35 [label = 35];
+  main_loopstate0 -> call_22 [label = 22];
+  main_loopstate0 -> main [label = 50];
+  main_loopstate0 -> call_39 [label = 39];
+  main_loopstate0 -> main_loopstate1 [label = 91];
+  main_loopstate2 -> call_28 [label = 28];
+  main_loopstate2 -> call_35 [label = 35];
+  main_loopstate2 -> call_22 [label = 22];
+  main_loopstate2 -> main [label = 50];
+  main_loopstate2 -> call_39 [label = 39];
+  main_loopstate2 -> main_loopstate0 [label = 91];
+  _ZL11store_outerPc -> call_59 [label = 59];
+  call_59 -> _ZL11store_innerPc;
+  call_39 -> _ZL11load_commonPKc;
+  call_28 -> _ZL11store_outerPc;
+  call_35 -> _ZL9load_rarePKc;
+  call_22 -> _Znwm;
+}
+

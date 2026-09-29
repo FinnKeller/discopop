@@ -15,12 +15,12 @@ the *sink* is the write end and the *source* is the read end. An end is volatile
 when its instruction identity is not fixed, i.e. several candidate instructions can
 be the one involved.
 
-| Split | Source (read) | Sink (write) | Signature            | Cases in this set | Reference       |
-|-------|---------------|--------------|----------------------|-------------------|-----------------|
-| 1     | stable        | stable       | `5 RAW 7` always     | 001-025 (`_none_`)   | case_0, case_4  |
-| 2     | stable        | volatile     | `5 RAW 7` / `5 RAW 9`| 026-050 (`_sinkvol_`)| case_1, case_5  |
-| 3     | volatile      | stable       | `5 RAW 7` / `3 RAW 7`| 051-075 (`_srcvol_`) | case_2, case_6  |
-| 4     | volatile      | volatile     | `5 RAW 7` / `3 RAW 9`| 076-100 (`_bothvol_`)| case_3, case_7  |
+| Split | Source (read) | Sink (write) | Signature            | Round 1 | Round 2 | Reference       |
+|-------|---------------|--------------|----------------------|---------|---------|-----------------|
+| 1     | stable        | stable       | `5 RAW 7` always     | 001-025 | 101-376 | case_0, case_4  |
+| 2     | stable        | volatile     | `5 RAW 7` / `5 RAW 9`| 026-050 | 377-451 | case_1, case_5  |
+| 3     | volatile      | stable       | `5 RAW 7` / `3 RAW 7`| 051-075 | 452-526 | case_2, case_6  |
+| 4     | volatile      | volatile     | `5 RAW 7` / `3 RAW 9`| 076-100 | 527-600 | case_3, case_7  |
 
 ## Naming
 
@@ -213,3 +213,154 @@ TOTAL         100     74       26
   once per repetition shows this as soon as the access count exceeds the batch
   size. Whether this artifact class should count as volatility is a property of
   the harness, not of the examples, so these cases are reported as measured.
+
+
+---
+
+# Round 2: cases 101-600
+
+500 further cases were generated on top of the original 100. They are numbered
+`case_101` to `case_600` and follow the same naming, commenting and directory
+conventions as round 1.
+
+## Balance
+
+Generated so that the combined set is split evenly between the two top level
+categories, counted over the 92 round 1 cases that were present in this folder
+at the time:
+
+| split          | round 1 | round 2 | generated | valid after validation |
+|----------------|---------|---------|-----------|------------------------|
+| `_none_no`     | 20      | 276     | 296       | 295                    |
+| `_sinkvol_yes` | 25      | 75      | 100       | 84                     |
+| `_srcvol_yes`  | 23      | 75      |  98       | 95                     |
+| `_bothvol_yes` | 24      | 74      |  98       | 94                     |
+| **no / yes**   |         |         | **296 / 296** | **295 / 273**      |
+
+## How the round 2 cases were constructed
+
+Round 1 lost 21 of its 25 split 1 cases, not because those programs were wrong
+but because the sampling harness reports an added `WAW` / `INIT 0@0` edge for
+many perfectly stable programs. Round 2 therefore started from measurement
+rather than from intuition. Three calibration runs were made *before* the cases
+were written:
+
+1. **Family pilot** - 35 minimal probes, one per structural family, at all six
+   batch sizes. Four families turned out to be reported volatile on their own:
+
+   | family                                           | verdict                   |
+   |--------------------------------------------------|---------------------------|
+   | static or global array whose cells are written   | VOLATILE at all six sizes |
+   | virtual dispatch, even with a single implementation | VOLATILE at 64 and 128 |
+   | bulk write loop over a stack array               | VOLATILE at 64 to 512     |
+   | elementwise write+read loop over a stack array   | VOLATILE at 64           |
+
+   The other 29 families were stable everywhere.
+
+2. **Pre-flight on a stratified sample** (106 cases, batch 64 and 256) - split 1
+   came out at 35 percent. Two levers were responsible: a second write to the
+   observed cell (3 of 33 stable) and padding placed *between* the write and the
+   read (0 of 18 stable). Both are harmless in a minimal probe and stop being
+   harmless in combination with anything else.
+
+3. **Pre-flight on all 276 split 1 cases** (batch 64 and 256) - after removing
+   those two levers the remaining failures were confined to three storages
+   (`heap_array`, `struct_field`, `nested_struct`, all of which perform an
+   auxiliary write to a second fixed address) and two decorations. Excluding
+   exactly those five families left **185 of 185 measured cases stable**, with
+   every remaining storage, write path, read path, decoration and type at 100
+   percent.
+
+The generator therefore composes each case from axes that were individually
+measured to be stable:
+
+* 11 storages - stack / static / global scalar, stack array element, pointer
+  arithmetic, `new`/`delete`, leaked `new`, `malloc`/`free`, heap struct field,
+  stack union member, randomly indexed array element
+* 11 write paths - direct, local pointer, three hop pointer chain, writer
+  function, reference parameter, function pointer, function pointer table with
+  identical slots, lambda, two level call chain, function template, choice
+  between two aliases of one object
+* 8 read paths - the same idea on the read side
+* 4 decorations - none, random branch on an unrelated scratch variable, dead
+  store, an unrelated write/read pair
+* 6 scalar types
+
+`_yes` cases are built on the same substrates, so that a case which is reported
+volatile is volatile because of its injected mechanism rather than because of a
+harness artifact. Virtual dispatch is deliberately **not** used by any round 2
+`_yes` case: it is volatile on its own at batch 64 and 128 and would let a case
+pass the validity criterion regardless of its intended mechanism.
+
+## Volatility mechanisms used in round 2
+
+Rarity comes from a `static int tick` counter that survives the repeat wrapper:
+
+    if (tick % P == R) ...
+
+with `P` between 19 and 41, so the rare instruction fires on two to five of the
+hundred repetitions. Uniform `rand() % N` is never used as the mechanism - all
+five `_yes` failures of round 1 used it, and with `N` small every variant is
+observed many times so the union of dependencies survives sampling.
+
+Ten mechanisms are used on each side: rare patch, rare branch arm, rare writer
+or reader function, rare function pointer retarget, rare function pointer table
+slot, rare lambda, rare `switch` arm, rare recursion stop depth, rare alias and
+rare loop shape. Split 4 combines one of each with coprime periods.
+
+Distance is an independent lever: `pad_writes` / `pad_reads` of 256 or 2560
+accesses. For `_srcvol_` cases the padding is placed **in front of** the write,
+so that no shadow memory clear can fall between write and read and only the
+source end is attacked.
+
+## Validation results
+
+`autotuner.sh`, `REPEAT_COUNT=100`, `BATCH_VALUES="64 128 256 512 1024 2048"`.
+Per case verdicts are in `volatility_results/`.
+
+    split            generated   valid   invalid
+    -----------------------------------------------
+    none_no                276     275         1
+    sinkvol_yes             75      69         6
+    srcvol_yes              75      75         0
+    bothvol_yes             74      74         0
+    -----------------------------------------------
+    TOTAL                  500     493         7   (98.6 percent)
+
+Number of cases reported VOLATILE at each batch size:
+
+    split              n     64    128    256    512   1024   2048
+    none_no          276      1      1      0      0      0      0
+    sinkvol_yes       75     69     64     43     36     30     17
+    srcvol_yes        75     75     75     70     62     62     62
+    bothvol_yes       74     74     74     67     46     46     40
+
+The seven invalid cases were deleted and are recorded in `invalid_cases.txt`.
+
+### The distance lever decides reproducibility
+
+The single clearest result of this round:
+
+| set                                   | with a distance lever | rarity alone |
+|---------------------------------------|-----------------------|--------------|
+| round 2 `_yes` cases                   | 182 / 182 valid       | 36 / 43 valid |
+| round 1 `_yes` cases, re-measured      | 5 / 5 valid           | 50 / 67 valid |
+
+Every single round 2 `_yes` failure is a case with no distance lever, and all
+six are `_sinkvol_` cases. Rarity alone is sufficient for the source side
+(13 of 13) and for the both-volatile side (15 of 15), but it is marginal on the
+sink side (8 of 14).
+
+### Round 1 cases do not fully reproduce
+
+This run also re-measured the 92 round 1 cases that are still in this folder.
+17 of them are invalid under the stated criterion, and 15 of those are recorded
+as OK in the round 1 table above - they were reported STABLE at every batch size
+this time. All 17 are cases that rely on rarity alone, with no distance lever;
+every round 1 case that does use a distance lever still passes.
+
+These 17 cases were **not** deleted. They belong to round 1 and removing them is
+the owner's decision, not the generator's. Their verdicts are in
+`volatility_results/`. The practical conclusion is that a `_yes` case built on
+rarity alone sits close to the detection threshold and its verdict is not
+reliably reproducible between runs, while a case that also uses distance is.

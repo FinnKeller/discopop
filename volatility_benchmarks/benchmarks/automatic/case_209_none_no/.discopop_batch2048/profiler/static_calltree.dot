@@ -1,0 +1,25 @@
+diGraph G {
+  main -> call_54 [label = 54];
+  main -> call_51 [label = 51];
+  main -> call_34 [label = 34];
+  main -> main_loopstate0 [label = 30];
+  main_loopstate1 -> call_54 [label = 54];
+  main_loopstate1 -> call_51 [label = 51];
+  main_loopstate1 -> main [label = 62];
+  main_loopstate1 -> call_34 [label = 34];
+  main_loopstate1 -> main_loopstate2 [label = 73];
+  main_loopstate0 -> call_54 [label = 54];
+  main_loopstate0 -> call_51 [label = 51];
+  main_loopstate0 -> main [label = 62];
+  main_loopstate0 -> call_34 [label = 34];
+  main_loopstate0 -> main_loopstate1 [label = 73];
+  main_loopstate2 -> call_54 [label = 54];
+  main_loopstate2 -> call_51 [label = 51];
+  main_loopstate2 -> main [label = 62];
+  main_loopstate2 -> call_34 [label = 34];
+  main_loopstate2 -> main_loopstate0 [label = 73];
+  call_54 -> free;
+  call_51 -> _ZL10load_valuePKx;
+  call_34 -> malloc;
+}
+

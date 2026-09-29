@@ -1,0 +1,15 @@
+diGraph G {
+  main -> call_31 [label = 31];
+  main -> main_loopstate0 [label = 21];
+  main_loopstate1 -> call_31 [label = 31];
+  main_loopstate1 -> main [label = 38];
+  main_loopstate1 -> main_loopstate2 [label = 49];
+  main_loopstate0 -> call_31 [label = 31];
+  main_loopstate0 -> main [label = 38];
+  main_loopstate0 -> main_loopstate1 [label = 49];
+  main_loopstate2 -> call_31 [label = 31];
+  main_loopstate2 -> main [label = 38];
+  main_loopstate2 -> main_loopstate0 [label = 49];
+  call_31 -> _ZL8load_refRKs;
+}
+

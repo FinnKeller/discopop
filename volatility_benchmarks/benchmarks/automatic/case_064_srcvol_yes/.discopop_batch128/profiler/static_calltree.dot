@@ -1,0 +1,21 @@
+diGraph G {
+  main -> call_85 [label = 85];
+  main -> main_loopstate0 [label = 77];
+  _Z13dispatch_readPKii -> call_56 [label = 56];
+  _Z13dispatch_readPKii -> call_52 [label = 52];
+  _Z13dispatch_readPKii -> call_45 [label = 45];
+  main_loopstate1 -> main [label = 95];
+  main_loopstate1 -> call_85 [label = 85];
+  main_loopstate1 -> main_loopstate2 [label = 98];
+  main_loopstate0 -> main [label = 95];
+  main_loopstate0 -> call_85 [label = 85];
+  main_loopstate0 -> main_loopstate1 [label = 98];
+  main_loopstate2 -> main [label = 95];
+  main_loopstate2 -> call_85 [label = 85];
+  main_loopstate2 -> main_loopstate0 [label = 98];
+  call_85 -> _Z13dispatch_readPKii;
+  call_56 -> _Z12reader_threePKi;
+  call_52 -> _Z10reader_twoPKi;
+  call_45 -> _Z10reader_onePKi;
+}
+

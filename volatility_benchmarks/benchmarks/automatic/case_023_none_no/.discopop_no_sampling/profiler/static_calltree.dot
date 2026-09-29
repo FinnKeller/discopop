@@ -1,0 +1,20 @@
+diGraph G {
+  main_loopstate1 -> call_35 [label = 35];
+  main_loopstate1 -> call_36 [label = 36];
+  main_loopstate1 -> main [label = 49];
+  main_loopstate1 -> main_loopstate2 [label = 52];
+  main -> call_36 [label = 36];
+  main -> call_35 [label = 35];
+  main -> main_loopstate0 [label = 30];
+  main_loopstate0 -> call_35 [label = 35];
+  main_loopstate0 -> call_36 [label = 36];
+  main_loopstate0 -> main [label = 49];
+  main_loopstate0 -> main_loopstate1 [label = 52];
+  main_loopstate2 -> call_35 [label = 35];
+  main_loopstate2 -> call_36 [label = 36];
+  main_loopstate2 -> main [label = 49];
+  main_loopstate2 -> main_loopstate0 [label = 52];
+  call_36 -> rand;
+  call_35 -> llvm_memcpy_p0_p0_i64;
+}
+

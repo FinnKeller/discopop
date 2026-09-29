@@ -1,0 +1,20 @@
+diGraph G {
+  main -> call_46 [label = 46];
+  main -> call_32 [label = 32];
+  main -> main_loopstate0 [label = 28];
+  main_loopstate1 -> call_32 [label = 32];
+  main_loopstate1 -> main [label = 53];
+  main_loopstate1 -> call_46 [label = 46];
+  main_loopstate1 -> main_loopstate2 [label = 72];
+  main_loopstate2 -> call_32 [label = 32];
+  main_loopstate2 -> main [label = 53];
+  main_loopstate2 -> call_46 [label = 46];
+  main_loopstate2 -> main_loopstate0 [label = 72];
+  main_loopstate0 -> call_32 [label = 32];
+  main_loopstate0 -> main [label = 53];
+  main_loopstate0 -> call_46 [label = 46];
+  main_loopstate0 -> main_loopstate1 [label = 72];
+  call_46 -> _ZL10load_valuePKj;
+  call_32 -> rand;
+}
+

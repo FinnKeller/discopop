@@ -1,0 +1,15 @@
+diGraph G {
+  main -> call_46 [label = 46];
+  main -> main_loopstate0 [label = 30];
+  main_loopstate1 -> call_46 [label = 46];
+  main_loopstate1 -> main [label = 53];
+  main_loopstate1 -> main_loopstate2 [label = 64];
+  main_loopstate0 -> call_46 [label = 46];
+  main_loopstate0 -> main [label = 53];
+  main_loopstate0 -> main_loopstate1 [label = 64];
+  main_loopstate2 -> call_46 [label = 46];
+  main_loopstate2 -> main [label = 53];
+  main_loopstate2 -> main_loopstate0 [label = 64];
+  call_46 -> _ZL12load_genericIsET_PKS0_;
+}
+

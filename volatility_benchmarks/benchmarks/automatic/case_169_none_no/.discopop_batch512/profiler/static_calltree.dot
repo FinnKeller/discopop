@@ -1,0 +1,25 @@
+diGraph G {
+  main_loopstate0 -> call_49 [label = 49];
+  main_loopstate0 -> call_42 [label = 42];
+  main_loopstate0 -> call_31 [label = 31];
+  main_loopstate0 -> main [label = 57];
+  main_loopstate0 -> main_loopstate1 [label = 76];
+  main -> call_49 [label = 49];
+  main -> call_42 [label = 42];
+  main -> call_31 [label = 31];
+  main -> main_loopstate0 [label = 27];
+  main_loopstate2 -> call_49 [label = 49];
+  main_loopstate2 -> call_42 [label = 42];
+  main_loopstate2 -> call_31 [label = 31];
+  main_loopstate2 -> main [label = 57];
+  main_loopstate2 -> main_loopstate0 [label = 76];
+  main_loopstate1 -> call_49 [label = 49];
+  main_loopstate1 -> call_42 [label = 42];
+  main_loopstate1 -> call_31 [label = 31];
+  main_loopstate1 -> main [label = 57];
+  main_loopstate1 -> main_loopstate2 [label = 76];
+  call_49 -> free;
+  call_42 -> _ZL9store_refRc;
+  call_31 -> malloc;
+}
+

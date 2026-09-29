@@ -1,0 +1,27 @@
+diGraph G {
+  main -> call_44 [label = 44];
+  main -> call_41 [label = 41];
+  main -> call_28 [label = 28];
+  main -> main_loopstate0 [label = 24];
+  main_loopstate1 -> call_44 [label = 44];
+  main_loopstate1 -> call_41 [label = 41];
+  main_loopstate1 -> call_28 [label = 28];
+  main_loopstate1 -> main [label = 51];
+  main_loopstate1 -> main_loopstate2 [label = 78];
+  main_loopstate0 -> call_44 [label = 44];
+  main_loopstate0 -> call_41 [label = 41];
+  main_loopstate0 -> call_28 [label = 28];
+  main_loopstate0 -> main [label = 51];
+  main_loopstate0 -> main_loopstate1 [label = 78];
+  _ZL10load_outerPKc -> call_68 [label = 68];
+  main_loopstate2 -> call_44 [label = 44];
+  main_loopstate2 -> call_41 [label = 41];
+  main_loopstate2 -> call_28 [label = 28];
+  main_loopstate2 -> main [label = 51];
+  main_loopstate2 -> main_loopstate0 [label = 78];
+  call_68 -> _ZL10load_innerPKc;
+  call_44 -> _ZL10load_outerPKc;
+  call_41 -> _ZL11store_valuePc;
+  call_28 -> _Znwm;
+}
+

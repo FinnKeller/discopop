@@ -1,0 +1,15 @@
+diGraph G {
+  main -> call_34 [label = 34];
+  main -> main_loopstate0 [label = 27];
+  main_loopstate1 -> call_34 [label = 34];
+  main_loopstate1 -> main [label = 64];
+  main_loopstate1 -> main_loopstate2 [label = 85];
+  main_loopstate0 -> call_34 [label = 34];
+  main_loopstate0 -> main [label = 64];
+  main_loopstate0 -> main_loopstate1 [label = 85];
+  main_loopstate2 -> call_34 [label = 34];
+  main_loopstate2 -> main [label = 64];
+  main_loopstate2 -> main_loopstate0 [label = 85];
+  call_34 -> rand;
+}
+

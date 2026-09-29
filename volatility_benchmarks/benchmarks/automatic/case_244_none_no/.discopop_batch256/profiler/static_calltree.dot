@@ -1,0 +1,25 @@
+diGraph G {
+  main -> call_37 [label = 37];
+  main -> call_32 [label = 32];
+  main -> call_25 [label = 25];
+  main -> main_loopstate0 [label = 21];
+  main_loopstate1 -> call_37 [label = 37];
+  main_loopstate1 -> call_25 [label = 25];
+  main_loopstate1 -> call_32 [label = 32];
+  main_loopstate1 -> main [label = 45];
+  main_loopstate1 -> main_loopstate2 [label = 61];
+  main_loopstate0 -> call_37 [label = 37];
+  main_loopstate0 -> call_25 [label = 25];
+  main_loopstate0 -> call_32 [label = 32];
+  main_loopstate0 -> main [label = 45];
+  main_loopstate0 -> main_loopstate1 [label = 61];
+  main_loopstate2 -> call_37 [label = 37];
+  main_loopstate2 -> call_25 [label = 25];
+  main_loopstate2 -> call_32 [label = 32];
+  main_loopstate2 -> main [label = 45];
+  main_loopstate2 -> main_loopstate0 [label = 61];
+  call_37 -> free;
+  call_32 -> _ZZ4mainENK3$_0clEPl;
+  call_25 -> malloc;
+}
+
