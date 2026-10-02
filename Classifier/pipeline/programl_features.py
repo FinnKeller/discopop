@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ir2vec import parse_case_metadata
+from real_ir2vec import parse_case_metadata
 
 try:
     import programl
@@ -100,7 +100,7 @@ def build_dataset(ir_dir: Path, output_dir: Path) -> tuple[pd.DataFrame, pd.Data
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--ir-dir", type=Path, default=Path(__file__).resolve().parents[1] / "llvmir")
+    parser.add_argument("--ir-dir", type=Path, default=Path(__file__).resolve().parents[1] / "llvmir" / "llvmir")
     parser.add_argument("--output-dir", type=Path, default=Path(__file__).resolve().parents[1] / "dataset")
     args = parser.parse_args()
     features, labels = build_dataset(args.ir_dir, args.output_dir)
