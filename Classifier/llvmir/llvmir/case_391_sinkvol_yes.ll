@@ -1,0 +1,78 @@
+; ModuleID = '/Users/finn/__Bacherlor/discopop/volatility_benchmarks/benchmarks/automatic/case_391_sinkvol_yes/case_391_sinkvol_yes.cpp'
+source_filename = "/Users/finn/__Bacherlor/discopop/volatility_benchmarks/benchmarks/automatic/case_391_sinkvol_yes/case_391_sinkvol_yes.cpp"
+target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
+target triple = "arm64-apple-macosx16.0.0"
+
+@_ZZ4mainE4tick = internal global i32 0, align 4
+
+; Function Attrs: mustprogress noinline norecurse ssp uwtable(sync)
+define noundef i32 @main() #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca [16 x i64], align 8
+  %3 = alloca i32, align 4
+  %4 = alloca ptr, align 8
+  %5 = alloca ptr, align 8
+  %6 = alloca i64, align 8
+  store i32 0, ptr %1, align 4
+  %7 = call i32 @rand()
+  %8 = srem i32 %7, 16
+  store i32 %8, ptr %3, align 4
+  %9 = load i32, ptr %3, align 4
+  %10 = sext i32 %9 to i64
+  %11 = getelementptr inbounds [16 x i64], ptr %2, i64 0, i64 %10
+  store ptr %11, ptr %4, align 8
+  %12 = load i32, ptr %3, align 4
+  %13 = sext i32 %12 to i64
+  %14 = getelementptr inbounds [16 x i64], ptr %2, i64 0, i64 %13
+  store ptr %14, ptr %5, align 8
+  %15 = load i32, ptr @_ZZ4mainE4tick, align 4
+  %16 = srem i32 %15, 37
+  %17 = icmp eq i32 %16, 29
+  br i1 %17, label %18, label %20
+
+18:                                               ; preds = %0
+  %19 = load ptr, ptr %5, align 8
+  store i64 55, ptr %19, align 8
+  br label %22
+
+20:                                               ; preds = %0
+  %21 = load ptr, ptr %4, align 8
+  store i64 48, ptr %21, align 8
+  br label %22
+
+22:                                               ; preds = %20, %18
+  %23 = load i32, ptr %3, align 4
+  %24 = sext i32 %23 to i64
+  %25 = getelementptr inbounds [16 x i64], ptr %2, i64 0, i64 %24
+  %26 = call noundef i64 @_ZL8load_refRKl(ptr noundef nonnull align 8 dereferenceable(8) %25)
+  store i64 %26, ptr %6, align 8
+  %27 = load i32, ptr @_ZZ4mainE4tick, align 4
+  %28 = add nsw i32 %27, 1
+  store i32 %28, ptr @_ZZ4mainE4tick, align 4
+  %29 = load i32, ptr %1, align 4
+  ret i32 %29
+}
+
+declare i32 @rand() #1
+
+; Function Attrs: mustprogress noinline nounwind ssp uwtable(sync)
+define internal noundef i64 @_ZL8load_refRKl(ptr noundef nonnull align 8 dereferenceable(8) %0) #2 {
+  %2 = alloca ptr, align 8
+  store ptr %0, ptr %2, align 8
+  %3 = load ptr, ptr %2, align 8
+  %4 = load i64, ptr %3, align 8
+  ret i64 %4
+}
+
+attributes #0 = { mustprogress noinline norecurse ssp uwtable(sync) "frame-pointer"="non-leaf" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="apple-m1" "target-features"="+aes,+crc,+crypto,+dotprod,+fp-armv8,+fp16fml,+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+sm4,+v8.1a,+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz" }
+attributes #1 = { "frame-pointer"="non-leaf" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="apple-m1" "target-features"="+aes,+crc,+crypto,+dotprod,+fp-armv8,+fp16fml,+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+sm4,+v8.1a,+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz" }
+attributes #2 = { mustprogress noinline nounwind ssp uwtable(sync) "frame-pointer"="non-leaf" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="apple-m1" "target-features"="+aes,+crc,+crypto,+dotprod,+fp-armv8,+fp16fml,+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+sm4,+v8.1a,+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz" }
+
+!llvm.module.flags = !{!0, !1, !2, !3}
+!llvm.ident = !{!4}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"uwtable", i32 1}
+!3 = !{i32 7, !"frame-pointer", i32 1}
+!4 = !{!"Homebrew clang version 16.0.6"}

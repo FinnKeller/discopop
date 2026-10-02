@@ -122,7 +122,7 @@ def main() -> None:
     parser.add_argument(
         "--ir-dir",
         type=Path,
-        default=Path(__file__).resolve().parents[1] / "llvmir",
+        default=Path(__file__).resolve().parents[1] / "llvmir" / "llvmir",
     )
     parser.add_argument(
         "--output-dir",

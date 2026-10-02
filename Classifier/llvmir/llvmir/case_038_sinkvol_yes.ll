@@ -1,0 +1,98 @@
+; ModuleID = '/Users/finn/__Bacherlor/discopop/volatility_benchmarks/benchmarks/automatic/case_038_sinkvol_yes/case_038_sinkvol_yes.cpp'
+source_filename = "/Users/finn/__Bacherlor/discopop/volatility_benchmarks/benchmarks/automatic/case_038_sinkvol_yes/case_038_sinkvol_yes.cpp"
+target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
+target triple = "arm64-apple-macosx16.0.0"
+
+@_ZZ4mainE4tick = internal global i32 0, align 4
+
+; Function Attrs: mustprogress noinline nounwind ssp uwtable(sync)
+define void @_Z10writer_onePi(ptr noundef %0) #0 {
+  %2 = alloca ptr, align 8
+  store ptr %0, ptr %2, align 8
+  %3 = load ptr, ptr %2, align 8
+  store i32 101, ptr %3, align 4
+  ret void
+}
+
+; Function Attrs: mustprogress noinline nounwind ssp uwtable(sync)
+define void @_Z10writer_twoPi(ptr noundef %0) #0 {
+  %2 = alloca ptr, align 8
+  store ptr %0, ptr %2, align 8
+  %3 = load ptr, ptr %2, align 8
+  store i32 102, ptr %3, align 4
+  ret void
+}
+
+; Function Attrs: mustprogress noinline nounwind ssp uwtable(sync)
+define void @_Z12writer_threePi(ptr noundef %0) #0 {
+  %2 = alloca ptr, align 8
+  store ptr %0, ptr %2, align 8
+  %3 = load ptr, ptr %2, align 8
+  store i32 103, ptr %3, align 4
+  ret void
+}
+
+; Function Attrs: mustprogress noinline nounwind ssp uwtable(sync)
+define void @_Z8dispatchPii(ptr noundef %0, i32 noundef %1) #0 {
+  %3 = alloca ptr, align 8
+  %4 = alloca i32, align 4
+  store ptr %0, ptr %3, align 8
+  store i32 %1, ptr %4, align 4
+  %5 = load i32, ptr %4, align 4
+  %6 = icmp eq i32 %5, 0
+  br i1 %6, label %7, label %9
+
+7:                                                ; preds = %2
+  %8 = load ptr, ptr %3, align 8
+  call void @_Z10writer_onePi(ptr noundef %8)
+  br label %17
+
+9:                                                ; preds = %2
+  %10 = load i32, ptr %4, align 4
+  %11 = icmp eq i32 %10, 1
+  br i1 %11, label %12, label %14
+
+12:                                               ; preds = %9
+  %13 = load ptr, ptr %3, align 8
+  call void @_Z10writer_twoPi(ptr noundef %13)
+  br label %16
+
+14:                                               ; preds = %9
+  %15 = load ptr, ptr %3, align 8
+  call void @_Z12writer_threePi(ptr noundef %15)
+  br label %16
+
+16:                                               ; preds = %14, %12
+  br label %17
+
+17:                                               ; preds = %16, %7
+  ret void
+}
+
+; Function Attrs: mustprogress noinline norecurse nounwind ssp uwtable(sync)
+define noundef i32 @main() #1 {
+  %1 = alloca i32, align 4
+  %2 = alloca i32, align 4
+  store i32 0, ptr %1, align 4
+  %3 = load i32, ptr @_ZZ4mainE4tick, align 4
+  %4 = srem i32 %3, 3
+  call void @_Z8dispatchPii(ptr noundef %1, i32 noundef %4)
+  %5 = load i32, ptr %1, align 4
+  store i32 %5, ptr %2, align 4
+  %6 = load i32, ptr @_ZZ4mainE4tick, align 4
+  %7 = add nsw i32 %6, 1
+  store i32 %7, ptr @_ZZ4mainE4tick, align 4
+  ret i32 0
+}
+
+attributes #0 = { mustprogress noinline nounwind ssp uwtable(sync) "frame-pointer"="non-leaf" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="apple-m1" "target-features"="+aes,+crc,+crypto,+dotprod,+fp-armv8,+fp16fml,+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+sm4,+v8.1a,+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz" }
+attributes #1 = { mustprogress noinline norecurse nounwind ssp uwtable(sync) "frame-pointer"="non-leaf" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="apple-m1" "target-features"="+aes,+crc,+crypto,+dotprod,+fp-armv8,+fp16fml,+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+sm4,+v8.1a,+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz" }
+
+!llvm.module.flags = !{!0, !1, !2, !3}
+!llvm.ident = !{!4}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"uwtable", i32 1}
+!3 = !{i32 7, !"frame-pointer", i32 1}
+!4 = !{!"Homebrew clang version 16.0.6"}
