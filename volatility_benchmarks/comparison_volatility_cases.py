@@ -130,64 +130,38 @@ def is_sampling_reset_artifact(lost_record, added_record):
     if not lost_segments or not added_segments:
         return False
 
-    lost_wars = [dep_value for dep_type, dep_value in lost_segments if dep_type == "WAR"]
-    if len(lost_wars) != 1:
-        return False
-
-    lost_war = lost_wars[0]
-    lost_var = var_name_from_dep(lost_war)
-    if lost_var is None:
-        return False
-
-    # Artifact signature: baseline deps for one variable are preserved, sampled
-    # run only adds extra WAW edges for the same variable due to sampling resets.
-    for dep_type, dep_value in lost_segments:
-        var = var_name_from_dep(dep_value)
-        if var != lost_var:
-            return False
-
-        if dep_type == "WAR":
-            continue
-        if dep_type == "INIT" and dep_value.startswith("0@0|"):
-            continue
-
-        return False
-
-    lost_counter = Counter(lost_segments)
-    added_counter = Counter(added_segments)
-
-    for segment, count in lost_counter.items():
-        if added_counter[segment] < count:
-            return False
-
-    has_init_zero = any(
-        dep_type == "INIT" and dep_value.startswith("0@0|") and var_name_from_dep(dep_value) == lost_var
+    # A reset can make the profiler lose some WAW connections to a memory
+    # region. It then reports the region as freshly initialized while retaining
+    # any WAW connections that were still known after the reset.
+    added_inits = [
+        dep_value
         for dep_type, dep_value in added_segments
-    )
-    has_same_war = any(dep_type == "WAR" and dep_value == lost_war for dep_type, dep_value in added_segments)
-    if not has_same_war:
+        if dep_type == "INIT" and dep_value.startswith("0@0|")
+    ]
+    if len(added_inits) != 1:
         return False
 
-    extra_segments = []
-    for segment, count in added_counter.items():
-        extra_count = count - lost_counter.get(segment, 0)
-        if extra_count > 0:
-            extra_segments.extend([segment] * extra_count)
-
-    if not extra_segments:
+    added_var = var_name_from_dep(added_inits[0])
+    if added_var is None:
         return False
 
-    return all(
-        (
-            dep_type == "WAW" and var_name_from_dep(dep_value) == lost_var
-        )
-        or (
-            dep_type == "INIT"
-            and dep_value.startswith("0@0|")
-            and var_name_from_dep(dep_value) == lost_var
-        )
-        for dep_type, dep_value in extra_segments
-    )
+    if any(
+        dep_type not in {"INIT", "WAW"} or var_name_from_dep(dep_value) != added_var
+        for dep_type, dep_value in lost_segments + added_segments
+    ):
+        return False
+
+    lost_waws = Counter(segment for segment in lost_segments if segment[0] == "WAW")
+    added_waws = Counter(segment for segment in added_segments if segment[0] == "WAW")
+    if not lost_waws:
+        return False
+
+    # The sampled record may retain a subset of the original WAW edges, but it
+    # must not introduce a new WAW edge unrelated to the reset.
+    if any(count > lost_waws[segment] for segment, count in added_waws.items()):
+        return False
+
+    return any(added_waws[segment] < count for segment, count in lost_waws.items())
 
 
 def filter_sampling_artifact_differences(lost, added):
@@ -209,8 +183,8 @@ def compare_dicts(d1, d2):
 
     for key in all_keys:
         # Compare unique dependency sets instead of frequency counts
-        set1 = set(normalize(v) for v in d1.get(key, []))
-        set2 = set(normalize(v) for v in d2.get(key, []))
+        set1 = set(normalize(value) for value in d1.get(key, []))
+        set2 = set(normalize(value) for value in d2.get(key, []))
 
         lost = set1 - set2
         added = set2 - set1
